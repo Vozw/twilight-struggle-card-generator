@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "deep-cover",
+  "number": 5,
+  "ops": 4,
+  "era": "late",
+  "association": "ussr",
+  "title": "Deep Cover",
+  "text": "*Playable as an event only if the USSR player has at least 3 influence in a US-controlled country.*\nAt the end of the last Action Round of this turn, remove all influence from both players from that country.",
+  "removedOnEvent": true,
+  "optional": true,
+  "permanent": false,
+  "scoring": false,
+  "scoringRegion": "",
+  "mayNotBeHeld": false,
+  "art": {
+    "src": "examples/_images/minox-camera.jpg",
+    "mode": "photo"
+  },
+  "presentation": {
+    "font": "georgia"
+  }
+}

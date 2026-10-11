@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "id": "sputnik-sequel",
+  "number": 1,
+  "ops": 3,
+  "era": "early",
+  "association": "ussr",
+  "title": "Sputnik Sequel",
+  "text": "The USSR can make an additional attempt to advance on the Space Race track this turn.\nThe next USSR attempt to advance on the Space Race track this turn automatically succeeds.",
+  "removedOnEvent": true,
+  "optional": false,
+  "permanent": false,
+  "scoring": false,
+  "scoringRegion": "",
+  "mayNotBeHeld": false,
+  "art": {
+    "src": "examples/_images/sputnik-1-replica.jpg",
+    "mode": "photo"
+  },
+  "presentation": {}
+}

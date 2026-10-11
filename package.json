@@ -1,0 +1,11 @@
+{
+  "name": "ts-card-generator",
+  "version": "1.0.0",
+  "description": "Local tool for designing custom Twilight Struggle cards, with a card library and Tabletop Simulator export.",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  }
+}

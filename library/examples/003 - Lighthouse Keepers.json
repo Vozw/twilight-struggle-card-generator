@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "id": "lighthouse-keepers",
+  "number": 3,
+  "ops": 2,
+  "era": "early",
+  "association": "usa",
+  "title": "Lighthouse Keepers",
+  "text": "Place 1 US Influence in three countries that the US already has Influence in and the USSR doesn't.",
+  "removedOnEvent": false,
+  "optional": false,
+  "permanent": false,
+  "scoring": false,
+  "scoringRegion": "",
+  "mayNotBeHeld": false,
+  "art": {
+    "src": "examples/_images/uscg-au-sable-lighthouse.jpg",
+    "mode": "photo"
+  },
+  "presentation": {}
+}

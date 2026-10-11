@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "id": "weather-satellite-pact",
+  "number": 2,
+  "ops": 2,
+  "era": "mid",
+  "association": "neutral",
+  "title": "Weather Satellite Pact",
+  "text": "*Play after \"Sputnik Sequel\".*\n\nBoth players may reroll one die per turn.\n\nThis effect lasts for the rest of the game.",
+  "removedOnEvent": true,
+  "optional": false,
+  "permanent": true,
+  "scoring": false,
+  "scoringRegion": "",
+  "mayNotBeHeld": false,
+  "art": {
+    "src": "examples/_images/tiros-1-first-tv-image.jpg",
+    "mode": "photo"
+  },
+  "presentation": {}
+}

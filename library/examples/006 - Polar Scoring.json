@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "id": "polar-scoring",
+  "number": 6,
+  "ops": 0,
+  "era": "early",
+  "association": "neutral",
+  "title": "Polar Scoring",
+  "text": "Both sides score:\nPresence: 2\nDomination: 4\nControl: 6\n+1 per controlled Battleground Country in Region",
+  "removedOnEvent": false,
+  "optional": false,
+  "permanent": false,
+  "scoring": true,
+  "scoringRegion": "",
+  "mayNotBeHeld": true,
+  "art": null,
+  "presentation": {
+    "scoringHeader": "#9CC3D5",
+    "scoringBand": "#CFE3EC"
+  }
+}

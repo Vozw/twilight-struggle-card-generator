@@ -1,0 +1,29 @@
+{
+  "_comment": [
+    "Manual corrections to the red-underline derivation, applied after the",
+    "structural rule in import.js. List cards by name or by card number.",
+    "",
+    "Rulebook 7.3: an underlined title means the Event's effects last for the",
+    "duration of the game. Rulebook 2.2.5: such cards stay face-up beside the",
+    "board until cancelled or the game ends. So the test is permanence, not",
+    "merely 'has a lasting effect' -- end-of-turn events do not qualify.",
+    "",
+    "Derived as: PutThisCardInPlay with argument 0 (0 = indefinite, 1 = for the",
+    "turn), plus PutThisCardInPlaySpecial (Shuttle Diplomacy, in play until",
+    "cancelled), plus Quagmire and Bear Trap by hand. Yields 20 cards.",
+    "",
+    "Verified by measuring the red rule directly on 12 Twilight Strategy scans:",
+    "  underlined     - NATO, NORAD, Quagmire, Flower Power",
+    "  not underlined - Containment, Brezhnev Doctrine, Red Scare/Purge,",
+    "                   Latin American Death Squads, We Will Bury You,",
+    "                   Missile Envy, Socialist Governments, Indo-Pakistani War",
+    "All 12 agree with the derivation.",
+    "",
+    "The remaining cards are derived, not confirmed. Render the deck, compare",
+    "against the wiki, and add corrections below."
+  ],
+
+  "underline": [],
+
+  "noUnderline": []
+}

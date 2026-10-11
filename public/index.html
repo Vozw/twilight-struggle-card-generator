@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Twilight Struggle Card Generator</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<header class="topbar">
+  <h1>Twilight Struggle Card Generator</h1>
+  <div class="topbar-actions">
+    <span id="status" class="status" role="status" aria-live="polite"></span>
+    <button type="button" id="settingsBtn" class="ghost">Settings</button>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- ------------------------------------------------ library sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <strong>Library</strong>
+      <div class="sidebar-tools">
+        <button type="button" id="newFolderBtn" title="New folder">New folder</button>
+        <button type="button" id="importBtn" title="Import from a spreadsheet">Import</button>
+        <button type="button" id="refreshBtn" title="Reload from disk">Refresh</button>
+      </div>
+    </div>
+    <input type="search" id="librarySearch" class="search" placeholder="Filter cards…" autocomplete="off">
+    <div class="tree" id="tree" tabindex="0"></div>
+    <div class="sidebar-foot">
+      <label class="inline">
+        <input type="checkbox" id="selectMode"> Selection mode
+      </label>
+      <div id="selectionInfo" class="muted"></div>
+      <label class="inline">
+        <input type="checkbox" id="renderMinis"> Also render mini-cards
+      </label>
+      <div class="sidebar-foot-actions">
+        <button type="button" id="renderAllBtn">Render selected</button>
+        <button type="button" id="ttsBtn">Build TTS deck</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ------------------------------------------------------- editor -->
+  <section class="editor">
+    <form id="cardForm" autocomplete="off">
+
+      <fieldset class="group">
+        <legend>Card</legend>
+        <div class="grid">
+          <label>Number
+            <input type="number" id="number" placeholder="21" min="0" step="1">
+          </label>
+          <label>Ops points
+            <input type="number" id="ops" placeholder="4" min="0" max="9" step="1">
+          </label>
+          <label>Era
+            <select id="era">
+              <option value="early">Early War</option>
+              <option value="mid">Mid War</option>
+              <option value="late">Late War</option>
+            </select>
+          </label>
+          <label>Association
+            <select id="association">
+              <option value="ussr">USSR</option>
+              <option value="usa">USA</option>
+              <option value="neutral">Neutral</option>
+            </select>
+          </label>
+        </div>
+        <label class="wide">Title
+          <input type="text" id="title" placeholder="NATO">
+        </label>
+        <div class="checks">
+          <label class="inline" title="Adds the * to the title and the red footer line"><input type="checkbox" id="removedOnEvent"> Removed on event</label>
+          <label class="inline" title="Red underline under the title: the effect outlives the current action round"><input type="checkbox" id="permanent"> Lasting effect</label>
+          <label class="inline"><input type="checkbox" id="optional"> Optional</label>
+          <label class="inline" title="Switches to the banded scoring-card layout"><input type="checkbox" id="scoring"> Scoring card</label>
+          <label class="inline" title="Red MAY NOT BE HELD bar (scoring cards)"><input type="checkbox" id="mayNotBeHeld"> May not be held</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="group">
+        <legend>Artwork</legend>
+        <div class="art-row">
+          <input type="file" id="artFile" accept="image/*">
+          <button type="button" id="clearArtBtn" class="ghost small">Clear</button>
+        </div>
+        <label class="wide">Image URL
+          <span class="with-button">
+            <input type="url" id="artUrl" placeholder="https://example.com/picture.png">
+            <button type="button" id="fetchArtBtn">Fetch</button>
+          </span>
+        </label>
+        <p class="hint">You can also just paste an image with <kbd>Ctrl</kbd>+<kbd>V</kbd>, or drag one onto the preview.</p>
+        <div class="checks">
+          <label class="inline"><input type="radio" name="artMode" value="photo" checked> Photo (bordered)</label>
+          <label class="inline"><input type="radio" name="artMode" value="logo"> Logo (no border)</label>
+        </div>
+        <div id="artStatus" class="muted small"></div>
+      </fieldset>
+
+      <fieldset class="group">
+        <legend>Effect text</legend>
+        <div class="markup-bar">
+          <button type="button" data-wrap="*" title="Italic (Ctrl+I)"><em>I</em></button>
+          <button type="button" data-wrap="**" title="Bold (Ctrl+B)"><strong>B</strong></button>
+          <span class="hint inline-hint">
+            <code>*italic*</code> · <code>**bold**</code> · blank line for a paragraph break
+          </span>
+        </div>
+        <textarea id="text" rows="8" spellcheck="true"
+          placeholder="*Play after 'Marshall Plan' or 'Warsaw Pact.'*&#10;&#10;USSR player may no longer make Coup or Realignment rolls in any US Controlled countries in Europe.&#10;&#10;US Controlled countries in Europe may not be attacked by play of the *Brush War* event."></textarea>
+        <div class="grid">
+          <label>Body font size
+            <select id="fontSize">
+              <option value="auto">Auto-fit</option>
+              <option value="20">20px</option>
+              <option value="19">19px</option>
+              <option value="18">18px</option>
+              <option value="17">17px</option>
+              <option value="16">16px</option>
+              <option value="15">15px</option>
+              <option value="14">14px</option>
+              <option value="13">13px</option>
+              <option value="12">12px</option>
+            </select>
+          </label>
+          <label>Title size
+            <input type="number" id="titleSize" min="14" max="34" step="1" placeholder="28">
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="group collapsed" id="reskinGroup">
+        <legend><button type="button" class="legend-toggle" id="reskinToggle">Reskin &amp; overrides ▸</button></legend>
+        <div class="collapsible">
+          <div class="grid">
+            <label>Text face
+              <select id="font">
+                <option value="caslon">Libre Caslon (bundled)</option>
+                <option value="georgia">Georgia (system)</option>
+              </select>
+            </label>
+            <label>Bar height
+              <input type="number" id="barHeight" min="16" max="48" step="1" placeholder="29">
+            </label>
+            <label>Banner text size
+              <input type="number" id="bannerTextSize" min="10" max="40" step="0.5" placeholder="25.5">
+            </label>
+          </div>
+          <label class="wide">Banner text
+            <input type="text" id="bannerText" placeholder="EARLY WAR">
+          </label>
+          <div class="grid colors">
+            <label>Bar<input type="color" id="barColor"></label>
+            <label>Star fill<input type="color" id="starFill"></label>
+            <label>Star outline<input type="color" id="starOutline"></label>
+            <label>Ops number<input type="color" id="opsColor"></label>
+            <label>Card<input type="color" id="cardColor"></label>
+            <label>Accent<input type="color" id="accentColor"></label>
+          </div>
+          <label class="wide">Footer line (shown when Removed / Permanent is ticked)
+            <input type="text" id="footerText" placeholder="Remove from play if used as an event.">
+          </label>
+          <div class="checks">
+            <label class="inline"><input type="checkbox" id="showBanner" checked> Show banner</label>
+            <label class="inline"><input type="checkbox" id="showStar" checked> Show star</label>
+          </div>
+          <button type="button" id="resetStyleBtn" class="ghost small">Reset overrides to era defaults</button>
+        </div>
+      </fieldset>
+
+    </form>
+  </section>
+
+  <!-- ------------------------------------------------------ preview -->
+  <section class="preview">
+    <div class="canvas-wrap" id="canvasWrap">
+      <canvas id="cardCanvas" width="750" height="1050" aria-label="Card preview"></canvas>
+      <div class="drop-overlay" id="dropOverlay">Drop image</div>
+    </div>
+
+    <div class="preview-actions">
+      <div class="row">
+        <button type="button" id="saveBtn" class="primary">Save to library</button>
+        <button type="button" id="saveAsBtn" class="ghost">Save as…</button>
+        <button type="button" id="newCardBtn" class="ghost">New card</button>
+      </div>
+      <div class="row">
+        <button type="button" id="exportBtn" class="primary">Export PNG</button>
+        <label class="inline compact">Scale
+          <select id="exportScale">
+            <option value="1">1x (375×525)</option>
+            <option value="2" selected>2x (750×1050)</option>
+            <option value="3">3x (1125×1575)</option>
+          </select>
+        </label>
+      </div>
+      <div id="currentPath" class="muted small"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ------------------------------------------------------------ dialogs -->
+
+<dialog id="settingsDialog">
+  <form method="dialog">
+    <h2>Settings</h2>
+    <label class="wide">Export folder
+      <input type="text" id="outputDir" placeholder="C:\path\to\folder">
+    </label>
+    <p class="hint">PNG exports and TTS decks are written here. Leave blank to use the generator's own <code>output</code> folder.</p>
+    <div class="dialog-actions">
+      <button value="cancel" class="ghost">Cancel</button>
+      <button value="save" class="primary" id="saveSettingsBtn">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="importDialog">
+  <form method="dialog">
+    <h2>Import from a spreadsheet</h2>
+    <p class="hint">
+      Paste CSV or TSV — copying straight out of Excel gives you TSV, which works as-is.
+      A header row is required. Recognised columns: <code>number</code>, <code>ops</code>,
+      <code>title</code>, <code>era</code>, <code>association</code>, <code>text</code>,
+      <code>removed</code>, <code>optional</code>, <code>permanent</code>, <code>scoring</code>.
+    </p>
+    <label class="wide">Destination folder
+      <input type="text" id="importFolder" placeholder="vanilla">
+    </label>
+    <textarea id="importText" rows="10" placeholder="number	ops	title	era	association	text&#10;21	4	NATO	early	usa	*Play after 'Marshall Plan'…*"></textarea>
+    <div id="importPreview" class="muted small"></div>
+    <div class="dialog-actions">
+      <button value="cancel" class="ghost">Cancel</button>
+      <button type="button" id="importPreviewBtn" class="ghost">Preview</button>
+      <button value="import" class="primary" id="importConfirmBtn">Import</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="ttsDialog">
+  <form method="dialog">
+    <h2>Build Tabletop Simulator deck</h2>
+    <label class="wide">Deck name
+      <input type="text" id="ttsName" placeholder="My Custom Deck">
+    </label>
+    <div class="grid">
+      <label>Card back
+        <select id="ttsBackMode">
+          <option value="generate">Generate from template</option>
+          <option value="image">Use an image file</option>
+        </select>
+      </label>
+      <label>Tile scale
+        <select id="ttsScale">
+          <option value="1" selected>1x (375×525 per card)</option>
+          <option value="2">2x (750×1050 per card) — large sheets</option>
+        </select>
+      </label>
+    </div>
+    <div id="ttsBackImageRow" class="hidden">
+      <input type="file" id="ttsBackFile" accept="image/*">
+    </div>
+    <label class="wide">Back title
+      <input type="text" id="ttsBackTitle" placeholder="TWILIGHT STRUGGLE">
+    </label>
+    <p class="hint" id="ttsSummary"></p>
+    <div class="dialog-actions">
+      <button value="cancel" class="ghost">Cancel</button>
+      <button value="build" class="primary" id="ttsBuildBtn">Build</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="promptDialog">
+  <form method="dialog">
+    <h2 id="promptTitle">Name</h2>
+    <label class="wide"><span id="promptLabel">Value</span>
+      <input type="text" id="promptInput">
+    </label>
+    <div class="dialog-actions">
+      <button value="cancel" class="ghost">Cancel</button>
+      <button value="ok" class="primary">OK</button>
+    </div>
+  </form>
+</dialog>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

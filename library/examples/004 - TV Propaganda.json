@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "id": "tv-propaganda",
+  "number": 4,
+  "ops": 1,
+  "era": "late",
+  "association": "neutral",
+  "title": "TV Propaganda",
+  "text": "Each player draws 2 cards, then discards 2 cards of their choice.\nIf a Scoring card is discarded this way, it is shuffled back into the deck.",
+  "removedOnEvent": false,
+  "optional": false,
+  "permanent": false,
+  "scoring": false,
+  "scoringRegion": "",
+  "mayNotBeHeld": false,
+  "art": {
+    "src": "examples/_images/family-watching-tv-1958.jpg",
+    "mode": "photo"
+  },
+  "presentation": {}
+}

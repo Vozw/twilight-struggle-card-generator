@@ -1,0 +1,38 @@
+# --- Third-party and user content: never commit ------------------------------
+# Imported cards carry GMT's card text, and stored artwork is other people's
+# work, so the whole library is ignored except the original examples.
+library/*
+!library/examples/
+
+# Rendered output (PNGs, TTS atlases, index.json) is generated, and the cards in
+# it are derived from the library.
+output/
+
+# Written on first save; holds absolute paths from this machine.
+config.json
+
+# --- Local reference material ------------------------------------------------
+# Keep GMT data, scans, rulebooks and third-party tools OUT of this repo. They
+# live beside it in the workspace, not inside it. These patterns are a backstop.
+*.lua
+*.pdf
+*.xls
+*.xlsx
+*.xlsm
+*.vmod
+*.zip
+*.tar.gz
+# ...except the synthetic fixtures the tests use, which are invented data.
+!test/fixtures/*.lua
+reference/
+artiDataFiles/
+sample_vanilla_images/
+
+# --- Tooling noise -----------------------------------------------------------
+node_modules/
+.claude/
+*.log
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
